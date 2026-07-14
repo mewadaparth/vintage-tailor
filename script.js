@@ -1,6 +1,6 @@
 /**
  * ============================================
- * PRINCE TAILOR & CLOTH - MAIN JAVASCRIPT
+ * VINTAGE THE MENS TAILOR - MAIN JAVASCRIPT
  * ============================================
  */
 
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 1. PRELOADER
     // ==========================================
 
-    const preloader = document.getElementById('preloader');
+    var preloader = document.getElementById('preloader');
 
     function hidePreloader() {
         if (preloader) {
@@ -37,36 +37,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // 2. NAVIGATION
     // ==========================================
 
-    const navbar = document.getElementById('navbar');
-    const navToggle = document.getElementById('navToggle');
-    const navMenu = document.getElementById('navMenu');
-    const navOverlay = document.getElementById('navOverlay');
-    const navLinks = document.querySelectorAll('.nav-link');
+    var navbar = document.getElementById('navbar');
+    var navToggle = document.getElementById('navToggle');
+    var navMenu = document.getElementById('navMenu');
+    var navOverlay = document.getElementById('navOverlay');
+    var navLinks = document.querySelectorAll('.nav-link');
 
-    window.addEventListener('scroll', function() {
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        if (currentScroll > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            if (currentScroll > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
 
     function toggleMenu() {
-        navToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
-        if (navOverlay) {
-            navOverlay.classList.toggle('active');
-        }
+        if (navToggle) navToggle.classList.toggle('active');
+        if (navMenu) navMenu.classList.toggle('active');
+        if (navOverlay) navOverlay.classList.toggle('active');
         document.body.classList.toggle('menu-open');
     }
 
     function closeMenu() {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-        if (navOverlay) {
-            navOverlay.classList.remove('active');
-        }
+        if (navToggle) navToggle.classList.remove('active');
+        if (navMenu) navMenu.classList.remove('active');
+        if (navOverlay) navOverlay.classList.remove('active');
         document.body.classList.remove('menu-open');
     }
 
@@ -83,20 +81,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    navLinks.forEach(function(link) {
-        link.addEventListener('click', function() {
-            closeMenu();
-            navLinks.forEach(function(l) { l.classList.remove('active'); });
-            this.classList.add('active');
+    if (navLinks.length > 0) {
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                closeMenu();
+                navLinks.forEach(function(l) { l.classList.remove('active'); });
+                this.classList.add('active');
+            });
         });
-    });
 
-    navLinks.forEach(function(link) {
-        link.addEventListener('touchstart', function() {
-            navLinks.forEach(function(l) { l.classList.remove('active'); });
-            this.classList.add('active');
-        }, { passive: true });
-    });
+        navLinks.forEach(function(link) {
+            link.addEventListener('touchstart', function() {
+                navLinks.forEach(function(l) { l.classList.remove('active'); });
+                this.classList.add('active');
+            }, { passive: true });
+        });
+    }
 
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -116,11 +116,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // 3. BACK TO TOP
     // ==========================================
 
-    const backTopBtn = document.getElementById('backTop');
+    var backTopBtn = document.getElementById('backTop');
 
     if (backTopBtn) {
         window.addEventListener('scroll', function() {
-            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+            var scrollY = window.pageYOffset || document.documentElement.scrollTop;
             if (scrollY > 500) {
                 backTopBtn.style.opacity = '1';
                 backTopBtn.style.visibility = 'visible';
@@ -145,18 +145,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // 4. ANIMATED COUNTERS
     // ==========================================
 
-    const statNumbers = document.querySelectorAll('.stat-number');
+    var statNumbers = document.querySelectorAll('.stat-number');
 
     function animateCounters() {
         statNumbers.forEach(function(counter) {
-            const target = parseInt(counter.getAttribute('data-count'));
-            const duration = 2000;
-            const step = Math.max(1, Math.floor(target / 60));
-            let current = 0;
+            var target = parseInt(counter.getAttribute('data-count'));
+            var duration = 2000;
+            var step = Math.max(1, Math.floor(target / 60));
+            var current = 0;
 
             if (counter.dataset.animated === 'true') return;
 
-            const interval = setInterval(function() {
+            var interval = setInterval(function() {
                 current += step;
                 if (current >= target) {
                     counter.textContent = target + '+';
@@ -170,33 +170,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                }
-            });
-        }, { threshold: 0.5 });
-
-        const aboutSection = document.querySelector('.about');
-        if (aboutSection) {
-            observer.observe(aboutSection);
-        }
-    } else {
-        let counterAnimated = false;
-        window.addEventListener('scroll', function() {
-            if (!counterAnimated) {
-                const aboutSection = document.querySelector('.about');
-                if (aboutSection) {
-                    const rect = aboutSection.getBoundingClientRect();
-                    if (rect.top < window.innerHeight * 0.7) {
+    if (statNumbers.length > 0) {
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
                         animateCounters();
-                        counterAnimated = true;
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            var aboutSection = document.querySelector('.about');
+            if (aboutSection) {
+                observer.observe(aboutSection);
+            }
+        } else {
+            var counterAnimated = false;
+            window.addEventListener('scroll', function() {
+                if (!counterAnimated) {
+                    var aboutSection = document.querySelector('.about');
+                    if (aboutSection) {
+                        var rect = aboutSection.getBoundingClientRect();
+                        if (rect.top < window.innerHeight * 0.7) {
+                            animateCounters();
+                            counterAnimated = true;
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     // ==========================================
@@ -205,14 +207,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
         anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
+            var targetId = this.getAttribute('href');
             if (targetId === '#') return;
 
-            const targetElement = document.querySelector(targetId);
+            var targetElement = document.querySelector(targetId);
             if (targetElement) {
                 e.preventDefault();
-                const navbarHeight = navbar ? navbar.offsetHeight : 80;
-                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                var navbarHeight = navbar ? navbar.offsetHeight : 80;
+                var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
 
                 window.scrollTo({
                     top: targetPosition,
@@ -226,65 +228,71 @@ document.addEventListener('DOMContentLoaded', function() {
     // 6. ACTIVE NAV LINK ON SCROLL
     // ==========================================
 
-    const sections = document.querySelectorAll('section[id]');
+    var sections = document.querySelectorAll('section[id]');
 
-    window.addEventListener('scroll', function() {
-        let current = '';
+    if (sections.length > 0 && navLinks.length > 0) {
+        window.addEventListener('scroll', function() {
+            var current = '';
 
-        sections.forEach(function(section) {
-            const sectionTop = section.offsetTop - (navbar ? navbar.offsetHeight : 80) - 50;
-            if (window.pageYOffset >= sectionTop) {
-                current = section.getAttribute('id');
-            }
+            sections.forEach(function(section) {
+                var sectionTop = section.offsetTop - (navbar ? navbar.offsetHeight : 80) - 50;
+                if (window.pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(function(link) {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
         });
-
-        navLinks.forEach(function(link) {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === '#' + current) {
-                link.classList.add('active');
-            }
-        });
-    });
+    }
 
     // ==========================================
     // 7. CONTACT FORM
     // ==========================================
 
-    const contactForm = document.getElementById('contactForm');
+    var contactForm = document.getElementById('contactForm');
 
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const name = document.getElementById('name')?.value?.trim();
-            const phone = document.getElementById('phone')?.value?.trim();
-            const message = document.getElementById('message')?.value?.trim();
+            var nameInput = document.getElementById('name');
+            var phoneInput = document.getElementById('phone');
+            var messageInput = document.getElementById('message');
+
+            var name = nameInput ? nameInput.value.trim() : '';
+            var phone = phoneInput ? phoneInput.value.trim() : '';
+            var message = messageInput ? messageInput.value.trim() : '';
 
             if (!name || !phone || !message) {
                 showToast('Please fill in all fields.', 'error');
                 return;
             }
 
-            const phoneRegex = /^[0-9]{10}$/;
+            var phoneRegex = /^[0-9]{10}$/;
             if (!phoneRegex.test(phone.replace(/[\s\-+()]/g, ''))) {
                 showToast('Please enter a valid 10-digit phone number.', 'error');
                 return;
             }
 
-            const whatsappNumber = '917023134520';
-            const whatsappMessage = encodeURIComponent(
+            var whatsappNumber = '919558022630';
+            var whatsappMessage = encodeURIComponent(
                 'Name: ' + name + '\n' +
                 'Phone: ' + phone + '\n' +
                 'Message: ' + message
             );
 
-            const whatsappURL = 'https://wa.me/' + whatsappNumber + '?text=' + whatsappMessage;
+            var whatsappURL = 'https://wa.me/' + whatsappNumber + '?text=' + whatsappMessage;
 
             showToast('Redirecting to WhatsApp...', 'success');
 
             setTimeout(function() {
                 window.open(whatsappURL, '_blank');
-                contactForm.reset();
+                if (contactForm) contactForm.reset();
             }, 800);
         });
     }
@@ -294,12 +302,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // ==========================================
 
     function showToast(message, type) {
-        const existingToast = document.querySelector('.toast-notification');
+        var existingToast = document.querySelector('.toast-notification');
         if (existingToast) {
             existingToast.remove();
         }
 
-        const toast = document.createElement('div');
+        var toast = document.createElement('div');
         toast.className = 'toast-notification toast-' + type;
         toast.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check-circle' : 'exclamation-circle') + '"></i> ' + message;
 
@@ -360,53 +368,55 @@ document.addEventListener('DOMContentLoaded', function() {
     // 10. ARCH CARDS - MOBILE TOUCH
     // ==========================================
 
-    const archCards = document.querySelectorAll('.arch-card');
-    let activeArchCard = null;
+    var archCards = document.querySelectorAll('.arch-card');
+    var activeArchCard = null;
 
-    archCards.forEach(function(card) {
-        card.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            if (this.classList.contains('touch-active')) {
-                this.classList.remove('touch-active');
+    if (archCards.length > 0) {
+        archCards.forEach(function(card) {
+            card.addEventListener('click', function(e) {
+                e.stopPropagation();
+
+                if (this.classList.contains('touch-active')) {
+                    this.classList.remove('touch-active');
+                    activeArchCard = null;
+                    return;
+                }
+
+                if (activeArchCard) {
+                    activeArchCard.classList.remove('touch-active');
+                }
+
+                this.classList.add('touch-active');
+                activeArchCard = this;
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (activeArchCard && !activeArchCard.contains(e.target)) {
+                activeArchCard.classList.remove('touch-active');
                 activeArchCard = null;
-                return;
             }
-            
+        });
+
+        window.addEventListener('scroll', function() {
             if (activeArchCard) {
                 activeArchCard.classList.remove('touch-active');
+                activeArchCard = null;
             }
-            
-            this.classList.add('touch-active');
-            activeArchCard = this;
         });
-    });
-
-    document.addEventListener('click', function(e) {
-        if (activeArchCard && !activeArchCard.contains(e.target)) {
-            activeArchCard.classList.remove('touch-active');
-            activeArchCard = null;
-        }
-    });
-
-    window.addEventListener('scroll', function() {
-        if (activeArchCard) {
-            activeArchCard.classList.remove('touch-active');
-            activeArchCard = null;
-        }
-    });
+    }
 
     // ==========================================
     // 11. SERVICES - VIEW ALL
     // ==========================================
 
-    const viewAllBtn = document.getElementById('viewAllBtn');
-    const servicesGrid = document.getElementById('servicesGrid');
+    var viewAllBtn = document.getElementById('viewAllBtn');
+    var servicesGrid = document.getElementById('servicesGrid');
 
     if (viewAllBtn && servicesGrid) {
         viewAllBtn.addEventListener('click', function() {
             servicesGrid.classList.toggle('show-all');
-            
+
             if (servicesGrid.classList.contains('show-all')) {
                 this.innerHTML = 'Show Less <i class="fas fa-arrow-up"></i>';
                 this.classList.add('active');
@@ -421,29 +431,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // 12. SCROLL INDICATOR
     // ==========================================
 
-    const scrollIndicator = document.getElementById('scrollIndicator');
+    var scrollIndicator = document.getElementById('scrollIndicator');
 
-    window.addEventListener('scroll', function() {
-        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollIndicator) {
+    if (scrollIndicator) {
+        window.addEventListener('scroll', function() {
+            var scrollY = window.pageYOffset || document.documentElement.scrollTop;
             if (scrollY > 300) {
                 scrollIndicator.classList.add('hidden');
             } else {
                 scrollIndicator.classList.remove('hidden');
             }
-        }
-    });
+        });
 
-    if (scrollIndicator) {
         scrollIndicator.addEventListener('click', function() {
-            const heroSection = document.querySelector('.hero');
+            var heroSection = document.querySelector('.hero');
             if (heroSection) {
-                const nextSection = heroSection.nextElementSibling;
+                var nextSection = heroSection.nextElementSibling;
                 if (nextSection) {
-                    const navbarHeight = document.getElementById('navbar')?.offsetHeight || 80;
-                    const targetPosition = nextSection.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-                    
+                    var navbarHeight = document.getElementById('navbar') ? document.getElementById('navbar').offsetHeight : 80;
+                    var targetPosition = nextSection.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
@@ -457,53 +464,206 @@ document.addEventListener('DOMContentLoaded', function() {
     // 13. RIPPLE EFFECT
     // ==========================================
 
-    const buttons = document.querySelectorAll('.btn, .quick-action-btn');
+    var buttons = document.querySelectorAll('.btn, .quick-action-btn');
 
-    buttons.forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            ripple.classList.add('ripple-effect');
+    if (buttons.length > 0) {
+        buttons.forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                var ripple = document.createElement('span');
+                ripple.classList.add('ripple-effect');
 
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
+                var rect = this.getBoundingClientRect();
+                var size = Math.max(rect.width, rect.height);
 
-            ripple.style.width = size + 'px';
-            ripple.style.height = size + 'px';
-            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                ripple.style.width = size + 'px';
+                ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
 
-            this.appendChild(ripple);
+                this.appendChild(ripple);
 
-            setTimeout(function() {
-                ripple.remove();
-            }, 600);
+                setTimeout(function() {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        var rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            .ripple-effect {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(201, 168, 124, 0.25);
+                transform: scale(0);
+                animation: ripple-animation 0.6s ease-out forwards;
+                pointer-events: none;
+            }
+
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(2.5);
+                    opacity: 0;
+                }
+            }
+
+            .btn, .quick-action-btn {
+                position: relative;
+                overflow: hidden;
+            }
+        `;
+        document.head.appendChild(rippleStyle);
+    }
+
+    console.log('✅ Vintage The Mens Tailor - Website Loaded Successfully');
+
+});
+// ==========================================
+// 14. GALLERY LIGHTBOX (Optional Feature)
+// ==========================================
+
+var galleryItems = document.querySelectorAll('.gallery-item');
+
+if (galleryItems.length > 0) {
+    galleryItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            var overlay = this.querySelector('.gallery-overlay');
+            if (overlay) {
+                // Toggle a class for expanded view
+                this.classList.toggle('expanded');
+            }
         });
     });
+}
 
-    const rippleStyle = document.createElement('style');
-    rippleStyle.textContent = `
-        .ripple-effect {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(6, 214, 160, 0.25);
-            transform: scale(0);
-            animation: ripple-animation 0.6s ease-out forwards;
-            pointer-events: none;
-        }
+// ==========================================
+// 15. GALLERY IMAGE LOADING ANIMATION
+// ==========================================
 
-        @keyframes ripple-animation {
-            to {
-                transform: scale(2.5);
-                opacity: 0;
+var galleryImages = document.querySelectorAll('.gallery-image');
+
+if (galleryImages.length > 0) {
+    var galleryObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'scale(1)';
             }
-        }
+        });
+    }, { threshold: 0.2 });
 
-        .btn, .quick-action-btn {
-            position: relative;
-            overflow: hidden;
-        }
-    `;
-    document.head.appendChild(rippleStyle);
+    galleryImages.forEach(function(img) {
+        img.style.opacity = '0.6';
+        img.style.transform = 'scale(0.98)';
+        img.style.transition = 'all 0.6s ease';
+        galleryObserver.observe(img);
+    });
+}
+// ==========================================
+// 14. GALLERY - SMOOTH ANIMATIONS
+// ==========================================
 
-    console.log('✅ Prince Tailor & Cloth - Website Loaded Successfully');
+var galleryItems = document.querySelectorAll('.gallery-item');
+
+// Gallery Scroll Reveal Animation
+if (galleryItems.length > 0 && 'IntersectionObserver' in window) {
+    var galleryObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry, index) {
+            if (entry.isIntersecting) {
+                // Add a small delay for each item for staggered effect
+                var delay = index * 80;
+                setTimeout(function() {
+                    entry.target.classList.add('reveal');
+                }, delay);
+                galleryObserver.unobserve(entry.target);
+            }
+        });
+    }, { 
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    galleryItems.forEach(function(item) {
+        // Set initial state for smooth entrance
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(50px) scale(0.92)';
+        item.style.transition = 'none';
+        galleryObserver.observe(item);
+    });
+}
+
+// Gallery Item Click - Expanded View (Optional Feature)
+if (galleryItems.length > 0) {
+    galleryItems.forEach(function(item) {
+        item.addEventListener('click', function(e) {
+            // Prevent if clicking on a link inside
+            if (e.target.closest('a')) return;
+            
+            // Toggle expanded state
+            this.classList.toggle('expanded');
+            
+            // Create/remove backdrop
+            var backdrop = document.querySelector('.gallery-expanded-backdrop');
+            if (this.classList.contains('expanded')) {
+                if (!backdrop) {
+                    backdrop = document.createElement('div');
+                    backdrop.className = 'gallery-expanded-backdrop';
+                    document.body.appendChild(backdrop);
+                }
+                backdrop.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                backdrop.addEventListener('click', function() {
+                    document.querySelector('.gallery-item.expanded')?.classList.remove('expanded');
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            } else {
+                if (backdrop) {
+                    backdrop.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+    });
+}
+
+// Close expanded gallery on ESC key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        var expanded = document.querySelector('.gallery-item.expanded');
+        if (expanded) {
+            expanded.classList.remove('expanded');
+            var backdrop = document.querySelector('.gallery-expanded-backdrop');
+            if (backdrop) {
+                backdrop.classList.remove('active');
+            }
+            document.body.style.overflow = '';
+        }
+    }
 });
+
+// ==========================================
+// 15. GALLERY - PARALLAX ON SCROLL
+// ==========================================
+
+if (galleryItems.length > 0) {
+    window.addEventListener('scroll', function() {
+        var gallerySection = document.querySelector('.gallery');
+        if (!gallerySection) return;
+        
+        var rect = gallerySection.getBoundingClientRect();
+        var scrollProgress = 1 - (rect.top / window.innerHeight);
+        
+        if (scrollProgress > 0 && scrollProgress < 1) {
+            var items = document.querySelectorAll('.gallery-item');
+            items.forEach(function(item, index) {
+                var speed = 0.05 + (index * 0.01);
+                var yOffset = scrollProgress * 20 * speed;
+                if (!item.classList.contains('expanded')) {
+                    item.style.transform = 'translateY(' + (yOffset) + 'px)';
+                }
+            });
+        }
+    }, { passive: true });
+}
+
+console.log('✅ Gallery Smooth Animations Loaded');
